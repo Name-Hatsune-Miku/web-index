@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册页面</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
+        integrity="sha384-Lge2E2XotzMiwH69/MXB72yLpwyENMiOKX8zS8Qo7LDCvaBIWGL+GlRQEKIpYR04"
+        crossorigin="anonymous"></script> -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        form {
+            max-width: 360px;
+            margin: 0 auto;
+            color: white;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        .error-message {
+            color: red;
+        }
+    </style>
+</head>
+
+<body
+    style="background-image: url(https://img.zcool.cn/community/01cfdc553d8d3e0000002561f5d241.jpg@1280w_1l_2o_100sh.jpg);">
+
+    <button id="al">获取验证码</button>
+    <div id="capcode"></div>
+    <form id="registrationForm" action="#">
+        <div class="form-group">
+            <label for="email">邮箱</label>
+            <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+            <div class="error-message" id="emailError" style="color: red;"></div>
+        </div>
+        <div class="form-group">
+            <label for="password">密码</label>
+            <input type="password" class="form-control" id="password">
+            <div class="error-message" id="passwordError" style="color: red;"></div>
+        </div>
+        <div class="form-group">
+            <label for="password1">确认密码</label>
+            <input type="password" class="form-control" id="password1">
+            <div class="error-message" id="passwordError1" style="color: red;"></div>
+        </div>
+        <div class="form-group">
+            <label for="username">用户名</label>
+            <input type="text" class="form-control" id="username">
+            <div class="error-message" id="usernameError" style="color: red;"></div>
+        </div>
+        <div class="form-group">
+            <label for="mobil">手机号</label>
+            <input type="text" class="form-control" id="mobil">
+            <div class="error-message" id="mobilnameError" style="color: red;"></div>
+        </div>
+        <div class="form-group">
+            <label for="usermase">验证码</label>
+            <input type="text" class="form-control" id="usermase">
+            <div class="error-message" id="masrnameError" style="color: red;"></div>
+        </div>
+        <div class="form-group">
+            <label for="userqq">QQ号</label>
+            <input type="text" class="form-control" id="userqq">
+            <div class="error-message" id="qqnameError" style="color: red;"></div>
+        </div>
+        <button type="submit" class="btn btn-primary" id="registerButton">注册</button>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#registrationForm').submit(function () {
+                event.preventDefault()
+                var username = $('#username').val();
+                var email = $('#email').val();
+                var password = $('#password').val();
+                var password1 = $('#password1').val();
+                var mobil = $('#mobil').val();
+                var usermase = $('#usermase').val();
+                var userqq = $('#userqq').val();
+                var valid = true;
+
+                // 简单的表单验证
+                if (username === '') {
+                    $('#usernameError').text('用户名不能为空');
+                    valid = false;
+                } else {
+                    $('#usernameError').text('');
+                    localStorage.setItem('error-username', JSON.stringify(username))
+                }
+
+                if (email === '') {
+                    $('#emailError').text('邮箱不能为空');
+                    valid = false;
+                } else {
+                    $('#emailError').text('');
+                    localStorage.setItem('error-email', JSON.stringify(email))
+                }
+
+                if (password === '') {
+                    $('#passwordError').text('密码不能为空');
+                    valid = false;
+                } else {
+                    $('#passwordError').text('');
+                    localStorage.setItem('error-password', JSON.stringify(password))
+                }
+
+                if (mobil === '') {
+                    $('#mobilnameError').text('手机号不能为空');
+                    valid = false;
+                } else {
+                    $('#mobilnameError').text('');
+                    localStorage.setItem('error-mobil', JSON.stringify(mobil))
+                }
+
+                if (usermase === '') {
+                    $('#masrnameError').text('请先获取验证码');
+                    valid = false;
+                } else {
+                    $('#masrnameError').text('');
+                    localStorage.setItem('error-mase', JSON.stringify(usermase))
+                }
+
+                if (userqq === '') {
+                    $('#qqnameError').text('QQ号不能为空');
+                    valid = false;
+                } else {
+                    $('#qqnameError').text('');
+                    localStorage.setItem('error-qq', JSON.stringify(userqq))
+                }
+
+                if (password === '' || password1 === '') {
+                    $('#passwordError1').text('请填写密码后确认密码');
+                    valid = false;
+                } else if (password1 != password) {
+                    $('#passwordError1').text('请再次确认密码');
+                    valid = false;
+                } else if (password1 == password) {
+                    $('#passwordError1').text('');
+                    valid = false;
+                }
+                else {
+                    $('#passwordError1').text('');
+                }
+                $('#al').click(function () {
+                    $.get('http://manage.zzgoodqc.cn/api/user/captcha?mobile=13299663249', function (res) {
+                        console.log(res);
+                        $('#capcode').html(res)
+                    })
+                })
+                $('#registerButton').click(function (event) {
+                    event.preventDefault()
+                    var username = $('#username').val();
+                    var email = $('#email').val();
+                    var password = $('#password').val();
+                    var password1 = $('#password1').val();
+                    var mobil = $('#mobil').val();
+                    var usermase = $('#usermase').val();
+                    var userqq = $('#userqq').val();
+                    $.ajax({
+                        url: 'http://manage.zzgoodqc.cn/api/user/register',
+                        type: 'post',
+                        data: {
+                            username: username,
+                            password: password,
+                            email: email,
+                            mobile: mobil,
+                            qq: userqq,
+                            captcha: $('#usermase').val(),
+                        },
+                        success: function (res) {
+                            console.log(res);
+                            if (res.status == 201) {
+                                window.location.href = '登录.html';
+                            }
+                        }
+                    })
+                })
+                if (valid) {
+                    window.location.href = './登录.html';
+                }
+                event.preventDefault(); // 阻止表单提交
+            });
+
+            // 添加按钮的鼠标悬停效果
+            $('#registerButton').hover(function () {
+                $(this).css('opacity', '0');
+            }, function () {
+                $(this).css('opacity', '1');
+            });
+        });
+        /* $(function () {
+            $('#al').click(function () {
+                $.get('http://manage.zzgoodqc.cn/api/user/captcha?mobile=13299663249', function (res) {
+                    console.log(res);
+                    $('#capcode').html(res)
+                })
+            })
+            $('#registerButton').click(function (event) {
+                event.preventDefault()
+                $.ajax({
+                    url: 'http://manage.zzgoodqc.cn/api/user/register',
+                    type: 'post',
+                    data: {
+                        username: Math.random().toString().substr(2, 8),
+                        password: '123456',
+                        email: 'akjsh@qq.com',
+                        mobile: 13299663249,
+                        qq: 3562528623,
+                        captcha: $('#usermase').val(),
+                    }
+                })
+                if (username === '' && usermase === '' && password === '') {
+                    event.preventDefault()
+                } else {
+                    window.location.href = './登录.html';
+                }
+                localStorage.setItem('user', JSON.stringify(username))
+                localStorage.setItem('error-password', JSON.stringify(password))
+            })
+        }) */
+    </script>
+
+</body>
+
+</html>
